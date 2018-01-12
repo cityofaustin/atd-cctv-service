@@ -1,14 +1,14 @@
-import os
 import json
 
 from flask import Flask,redirect,flash,request
 
 from secrets import SECRET_KEY
 
+CAM_DATA_PATH = '../data/device_data_cameras.json'
 CAM_ID_KEY = 'CAMERA_ID'
+CAM_IP_FIELD = 'CAMERA_IP'
 CAM_ID_PARAM = 'cam_id'
 
-path = os.environ.get('TDP_PATH')
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
@@ -16,9 +16,9 @@ app.secret_key = SECRET_KEY
 def get_camera_by_id(path, key, val):
     #  return camera data that matches requested camera ID
     with open(path, 'r') as fin:
-        data = json.loads(fin)
+        data = json.loads(fin.read())
         for row in data:
-            if row[key] == val:
+            if str(row[key]) == str(val):
                 return row
         #  camera not found
         return None
@@ -33,16 +33,24 @@ def redir():
     #  Parse URL for camera ID
     cam_id = request.args.get(CAM_ID_PARAM)
     
-    #  Get camera data from source JSON
-    cam = get_camera_by_id(
-        path,
-        CAM_ID_KEY,
-        cam_id
-    )
-    ip = cam['ip']
+    if cam_id:
+        #  Get camera data from source JSON
+        cam = get_camera_by_id(
+            CAM_DATA_PATH,
+            CAM_ID_KEY,
+            cam_id
+        )
 
-    #  Redirect to camera feed
-    return f'http://{ip}'
+        if cam:
+            ip = cam[CAM_IP_FIELD]
+
+            #  Redirect to camera feed
+            return redirect(f'http://{ip}', code=302)
+
+        return f'Camera ID {cam_id} not found :/'
+
+    else:
+        return 'No camera specified.'
 
 
 if __name__ == '__main__':
