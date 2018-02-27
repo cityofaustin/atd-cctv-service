@@ -4,7 +4,7 @@ from flask import Flask,redirect,flash,request
 
 from secrets import SECRET_KEY
 
-CAM_DATA_PATH = '../data/device_data_cameras.json'
+CAM_DATA_PATH = 'usr/bin/transportation-data-publishing/transportation-data-publishing/data/device_data_cameras.json'
 CAM_ID_KEY = 'CAMERA_ID'
 CAM_IP_FIELD = 'CAMERA_IP'
 CAM_ID_PARAM = 'cam_id'
