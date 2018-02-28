@@ -8,13 +8,14 @@ A tiny flask app that connects COA staff to traffic camera feeds.
 
 3. Build the Docker image: `docker build -t atddocker/cctv-service .`.
 
-4. Launch the container/app: 
+4. Launch the container/app (note how we mount an absolute path to our cctv camera data): 
 
 ```
 sudo docker run -d \
     -p 5000:5000 \
     -e LANG=C.UTF-8 \
     -v "$(pwd)":/app/ \
+    -v "/usr/bin/transportation-data-publishing/transportation-data-publishing/data":/data/ \
     --rm \
     atddocker/cctv-service
 ```
