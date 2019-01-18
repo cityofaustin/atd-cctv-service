@@ -1,5 +1,15 @@
 #  cctv-service
-A tiny flask app that connects COA staff to traffic camera feeds.
+CCTV service is a tiny Flask app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+
+Here's how it works:
+
+1. You are connected to the City of Austin network, and you have been whitelisted to access the CCTV camera feeds.
+
+2. You visit the [Device Status Dashboard](http://transportaiton.austintexas.io/device-status), select a CCTV camera, and click the link to view its video feed.
+
+3. The link to view the feed hits the CCTV service, and looks like this `http://<server ip>:<port>?cam_id=204`. Where `cam_id` is the unique ID of the camera feed your're trying to view.
+
+4. The CCTV service is only available on the city network, in which case the service will look up the IP address of the camera you requested, and redirect you to it.
 
 ##  Quick Start
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine `systemctl start docker`.
@@ -20,7 +30,7 @@ sudo docker run -d \
     atddocker/cctv-service
 ```
 
-5. Visit the app at `http://[Your host IP]:5000`
+5. Visit the app at `http://<your host IP>:5000?cam_id=<a valid camera id>`
 
 ## License
 
