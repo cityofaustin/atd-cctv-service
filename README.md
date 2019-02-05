@@ -25,7 +25,8 @@ sudo docker run -d \
     -p 5000:5000 \
     -e LANG=C.UTF-8 \
     -v "$(pwd)":/app/ \
-    -v "/usr/bin/transportation-data-publishing/transportation-data-publishing/data":/data/ \
+    -v "/home/publisher/transportation-data-publishing/transportation-data-publishing/data":/data/ \
+    --name  cctv-service \
     --rm \
     atddocker/cctv-service
 ```
