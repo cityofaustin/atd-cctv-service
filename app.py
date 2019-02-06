@@ -1,4 +1,5 @@
 import json
+import logging
 
 from flask import Flask, redirect, flash, request
 
@@ -13,15 +14,20 @@ app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
 
-def get_camera_by_id(path, key, val):
-    #  return camera data that matches requested camera ID
+def load_data(path):
     with open(path, "r") as fin:
         data = json.loads(fin.read())
-        for row in data:
-            if str(row[key]) == str(val):
-                return row
-        #  camera not found
-        return None
+
+    return data
+
+
+def get_camera_by_id(data, key, val):
+    #  return camera data that matches requested camera ID
+    for row in data:
+        if str(row[key]) == str(val):
+            return row
+    #  camera not found
+    return None
 
 
 @app.route("/")
@@ -35,7 +41,7 @@ def redir():
 
     if cam_id:
         #  Get camera data from source JSON
-        cam = get_camera_by_id(CAM_DATA_PATH, CAM_ID_KEY, cam_id)
+        cam = get_camera_by_id(data, CAM_ID_KEY, cam_id)
 
         if cam:
             ip = cam[CAM_IP_FIELD]
@@ -50,4 +56,8 @@ def redir():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename='error.log',level=logging.DEBUG)
+
+    data = load_data(CAM_DATA_PATH)
+
     app.run(debug=True, host="0.0.0.0")
