@@ -36,6 +36,9 @@ def redir():
     Redirect client to camera feed
     """
 
+    # temp debugging to understand dropped requests
+    logging.info(request)
+
     #  Parse URL for camera ID
     cam_id = request.args.get(CAM_ID_PARAM)
 
