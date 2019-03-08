@@ -31,7 +31,7 @@ def get_camera_by_id(data, key, val):
 
 
 @app.route("/")
-def redir():
+def return_camera_url():
     """
     Redirect client to camera feed
     """
@@ -50,9 +50,9 @@ def redir():
             ip = cam[CAM_IP_FIELD]
 
             #  Redirect to camera feed
-            logging.info(f"redirect to {ip}")
+            logging.info(f"return {ip}")
             
-            return redirect(f"http://{ip}", code=302)
+            return f"<h1><a href=\"http://{ip}\">{ip}</a></h1>"
 
         return f"Camera ID {cam_id} not found :/"
 
