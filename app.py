@@ -52,7 +52,7 @@ def return_camera_url():
             #  Redirect to camera feed
             logging.info(f"return {ip}")
             
-            return f"<h1><a href=\"http://{ip}\">{ip}</a></h1>"
+            return f"<h1><a href=\"http://{ip}\">Click here to view camera feed for camera {cam_id}</a></h1>"
 
         return f"Camera ID {cam_id} not found :/"
 
