@@ -5,7 +5,7 @@ from flask import Flask, redirect, flash, request
 
 from secrets import SECRET_KEY
 
-CAM_DATA_PATH = "/data/cameras.json"  #  mount JSON to /data/ on container launch
+CAM_DATA_PATH = "data/cameras.json"  #  mount JSON to /data/ on container launch
 CAM_ID_KEY = "CAMERA_ID"
 CAM_IP_FIELD = "CAMERA_IP"
 CAM_ID_PARAM = "cam_id"
@@ -50,6 +50,8 @@ def redir():
             ip = cam[CAM_IP_FIELD]
 
             #  Redirect to camera feed
+            logging.info(f"redirect to {ip}")
+            
             return redirect(f"http://{ip}", code=302)
 
         return f"Camera ID {cam_id} not found :/"
