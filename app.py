@@ -5,7 +5,7 @@ from flask import Flask, redirect, flash, request
 
 from secrets import SECRET_KEY
 
-CAM_DATA_PATH = "data/cameras.json"  #  mount JSON to /data/ on container launch
+CAM_DATA_PATH = "/data/cameras.json"  #  mount JSON to /data/ on container launch
 CAM_ID_KEY = "CAMERA_ID"
 CAM_IP_FIELD = "CAMERA_IP"
 CAM_ID_PARAM = "cam_id"
