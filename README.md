@@ -21,14 +21,16 @@ Here's how it works:
 4. Launch the container/app (note how we mount an absolute path to our cctv camera data): 
 
 ```
-sudo docker run -d \
-    -p 5000:5000 \
+sudo docker run
+    -d \
+    -p 8000:8000 \
     -e LANG=C.UTF-8 \
     -v "$(pwd)":/app/ \
     -v "/home/publisher/transportation-data-publishing/transportation-data-publishing/data":/data/ \
-    --name  cctv-service \
+    --name  cctv-service-async \
     --rm \
-    atddocker/cctv-service
+    atddocker/cctv-service \
+    /bin/bash -c "python app/app.py"
 ```
 
 5. Visit the app at `http://<your host IP>:5000?cam_id=<a valid camera id>`
