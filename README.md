@@ -1,5 +1,5 @@
 #  cctv-service
-CCTV service is a tiny Flask app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
 
 Here's how it works:
 
