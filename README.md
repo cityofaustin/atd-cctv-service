@@ -1,5 +1,6 @@
 #  cctv-service
-CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportation.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+
 
 Here's how it works:
 
@@ -23,7 +24,7 @@ Here's how it works:
 ```
 sudo docker run --name  cctv-service \
     -d \
-    -p 5000:5000 \
+    -p 8000:8000 \
     -e LANG=C.UTF-8 \
     -v "/home/publisher/cctv-service/app":/app \
     -v "/home/publisher/transportation-data-publishing/transportation-data-publishing/data":/data/ \
