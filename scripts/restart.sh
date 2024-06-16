@@ -1,1 +1,1 @@
-sudo docker restart cctv-service
+docker restart cctv-service
