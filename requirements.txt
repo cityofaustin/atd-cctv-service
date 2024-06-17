@@ -1,2 +1,2 @@
 requests==2.21.0
-sanic==18.12.0
+sanic==20.12.7
