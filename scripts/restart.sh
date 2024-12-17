@@ -1,1 +1,0 @@
-docker restart cctv-service
