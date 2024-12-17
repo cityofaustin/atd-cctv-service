@@ -1,6 +1,6 @@
-#  cctv-service
-CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+# cctv-service
 
+CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Device Status Dashboard](http://transportaiton.austintexas.io/device-status) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
 
 Here's how it works:
 
@@ -12,25 +12,20 @@ Here's how it works:
 
 4. The CCTV service is only available on the city network, in which case the service will look up the IP address of the camera you requested, and redirect you to it.
 
-##  Quick Start
+## Quick Start
+
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine `systemctl start docker`.
 
 2. Clone this repo and on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-serivce && cd cctv-serivce`.
 
 3. Build the Docker image: `docker build -t atddocker/cctv-service .`.
 
-4. Launch the container/app (note how we mount an absolute path to our cctv camera data): 
+4. The service is managed by `systemd`. To start, stop and restart the service, use the following:
 
 ```
-sudo docker run --name  cctv-service \
-    -d \
-    -p 8000:8000 \
-    -e LANG=C.UTF-8 \
-    -v "/home/publisher/cctv-service/app":/app \
-    -v "/home/publisher/transportation-data-publishing/transportation-data-publishing/data":/data/ \
-    --name  cctv-service \
-    atddocker/cctv-service \
-    python app.py
+sudo systemctl start cctv-service
+sudo systemctl stop cctv-service
+sudo systemctl restart cctv-service
 ```
 
 5. Visit the app at `http://<your host IP>:5000?cam_id=<a valid camera id>`
