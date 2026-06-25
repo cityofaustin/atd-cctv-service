@@ -1,0 +1,14 @@
+services:
+  fetcher:
+    build:
+      context: ./fetcher
+    volumes:
+      - ./fetcher:/app:ro
+      - camera-data:/data
+  cctv-redirect:
+    build:
+      context: ./server
+    volumes:
+      - ./server:/app:ro
+      - camera-data:/data:ro
+    command: gunicorn --bind 0.0.0.0:8000 --workers 1 --reload app:app
