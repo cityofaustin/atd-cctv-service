@@ -8,7 +8,6 @@ services:
       - KNACK_APP_ID=${KNACK_APP_ID}
       - KNACK_API_KEY=${KNACK_API_KEY}
       - KNACK_CONTAINER=${KNACK_CONTAINER}
-      - FETCH_INTERVAL=86400
     restart: unless-stopped
 
   cctv-redirect:
