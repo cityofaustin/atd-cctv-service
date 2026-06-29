@@ -43,12 +43,6 @@ sudo systemctl stop cctv-service
 sudo systemctl restart cctv-service
 ```
 
-
-
-## Testing
-
-
-
 ## License
 
 As a work of the City of Austin, this project is in the public domain within the United States.
