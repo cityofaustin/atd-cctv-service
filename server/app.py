@@ -1,6 +1,7 @@
 """
 CCTV Redirect Service
 """
+
 import json
 import logging
 import os
@@ -48,24 +49,25 @@ def get_camera_by_id(key, val):
 
 @app.get("/")
 def index():
-    """Redirect client to camera feed."""
-    raw = request.args.get(CAM_ID_PARAM)
+    return Response("Not found.", status=404, mimetype="text/plain")
 
-    if raw is None:
+
+@app.get("/camera/<int:camera_id>")
+def get_camera(camera_id):
+    """Redirect client to camera feed."""
+
+    if not camera_id:
         return Response("No camera specified.", status=400, mimetype="text/plain")
 
-    try:
-        cam_id = int(raw)
-    except ValueError:
-        return Response("Camera ID must be an integer.", status=400, mimetype="text/plain")
-
-    cam = get_camera_by_id(CAM_ID_KEY, cam_id)
+    cam = get_camera_by_id(CAM_ID_KEY, camera_id)
     if cam is None:
-        return Response(f"Camera ID {cam_id} not found :/", status=404, mimetype="text/plain")
+        return Response(
+            f"Camera ID {camera_id} not found", status=404, mimetype="text/plain"
+        )
 
     ip = cam.get(CAM_IP_FIELD)
     if not ip:
-        logger.error("Camera %s has no %s field", cam_id, CAM_IP_FIELD)
+        logger.error("Camera %s has no %s field", camera_id, CAM_IP_FIELD)
         abort(500, description="Camera record is malformed")
 
     return redirect(f"http://{ip}", code=302)
@@ -84,6 +86,7 @@ def healthz():
 @app.errorhandler(405)
 def method_not_allowed(error):
     return Response("Method not allowed.", status=405, mimetype="text/plain")
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
