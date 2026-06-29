@@ -14,7 +14,7 @@ Here's how it works:
 
 4. The CCTV service is only available on the city network, in which case the service will look up the IP address of the camera you requested, and redirect you to it.
 
-5. Behind the scenes, another service (`cctv-fetcher`) periodicallyrefreshes the list of camera's that redirect server reads from.
+5. Behind the scenes, another service (`cctv-fetcher`) periodically refreshes the list of camera's that redirect server reads from.
 
 ## Local development
 
