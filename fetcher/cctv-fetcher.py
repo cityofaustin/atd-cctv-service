@@ -20,7 +20,6 @@ logger = logging.getLogger(__name__)
 CAM_DATA_PATH = os.environ.get("CAM_DATA_PATH", "/data/cameras.json")
 KNACK_APP_ID = os.environ["KNACK_APP_ID"]
 KNACK_API_KEY = os.environ["KNACK_API_KEY"]
-FETCH_INTERVAL = int(os.environ.get("FETCH_INTERVAL", "86400"))  # daily
 KNACK_CONTAINER = os.environ.get("KNACK_CONTAINER", "view_395")
 
 
