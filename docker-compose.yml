@@ -14,7 +14,7 @@ services:
   cctv-redirect:
     image: atddocker/cctv-service:latest
     ports:
-      - "8000:8000"
+      - "5001:8000"
     volumes:
       - camera-data:/data:ro
     environment:

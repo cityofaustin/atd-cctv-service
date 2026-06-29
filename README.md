@@ -1,6 +1,8 @@
 # cctv-service
 
-CCTV service is a tiny Sanic app that connects COA staff to traffic camera feeds. It serves the purpose of re-directing on-network visitors to the public [Traffic Cameras Dashboard](https://data.mobility.austin.gov/traffic-cameras) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
+CCTV service is a flask app that connects COA staff to traffic camera feeds. 
+
+It serves the purpose of re-directing on-network visitors to the public [Traffic Cameras Dashboard](https://data.mobility.austin.gov/traffic-cameras) to the CCTV camera feeds which sit behind the COA firewall, and avoids the need for us to expose the CCTV IP addresses to the public internet.
 
 Here's how it works:
 
@@ -8,27 +10,44 @@ Here's how it works:
 
 2. You visit the [Traffic Cameras Dashboard](https://data.mobility.austin.gov/traffic-cameras), select a CCTV camera, and click the link to view its video feed.
 
-3. The link to view the feed hits the CCTV service, and looks like this `http://<server ip>:<port>?cam_id=204`. Where `cam_id` is the unique ID of the camera feed your're trying to view.
+3. The link to view the feed hits the CCTV service, and looks like this `http://<server ip>:<port>/camera/<camera_id>`. Where `camera_id` is the unique ID of the camera feed your're trying to view.
 
 4. The CCTV service is only available on the city network, in which case the service will look up the IP address of the camera you requested, and redirect you to it.
 
-## Quick Start
+5. Behind the scenes, another service (`cctv-fetcher`) periodicallyrefreshes the list of camera's that redirect server reads from.
+
+## Local development
 
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine `systemctl start docker`.
 
 2. Clone this repo and on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-serivce && cd cctv-serivce`.
 
-3. Build the Docker image: `docker build -t atddocker/cctv-service .`.
+3. Save a copy of `env_template` as `.env` and fill in the values.
 
-4. The service is managed by `systemd`. To start, stop and restart the service, use the following:
+4. Build the Docker images and start the service, using the `local` compose override to mount your local copy of the app into the container:
+
+5. Test the redirect service by visiting a URL with a known camera ID, such as: `http://localhost:5001/camera/100`
+
+```shell
+docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
+```
+
+## Production setup
+
+6. The service is managed by `systemd`. To start, stop and restart the service, use the following:
 
 ```
+# todo
 sudo systemctl start cctv-service
 sudo systemctl stop cctv-service
 sudo systemctl restart cctv-service
 ```
 
-5. Visit the app at `http://<your host IP>:5000?cam_id=<a valid camera id>`
+
+
+## Testing
+
+
 
 ## License
 

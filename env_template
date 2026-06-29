@@ -1,0 +1,3 @@
+KNACK_APP_ID=<see Knack AMD Data Tracker  - `appId` entry in 1pass>
+KNACK_API_KEY=<see Knack AMD Data Tracker - `apiKey` entry in 1pass>
+KNACK_CONTAINER=view_395

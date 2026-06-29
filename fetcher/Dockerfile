@@ -4,14 +4,17 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY cctv-fetcher.py .
 
-RUN useradd --create-home appuser \
-    && mkdir -p /data \
-    && chown appuser:appuser /data
+# install cron
+RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
-    USER appuser
+# add crontab
+RUN echo "13 3 * * * /usr/local/bin/python /app/cctv-fetcher.py >> /proc/1/fd/1 2>&1" | crontab -
 
-CMD ["python", "cctv-fetcher.py"]
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+CMD ["sh", "./entrypoint.sh"]
+
