@@ -102,7 +102,7 @@ def healthz():
         last_fetch_timestamp = get_last_data_fetch_timestamp(FETCH_LOG_PATH)
     except Exception as e:
         response["status"] = "unhealthy"
-        response["message"] = str(e)
+        response["message"] = "Unable to read last fetch timestamp"
         return jsonify(response), 503
 
     response["last_fetch_timestamp"] = last_fetch_timestamp
