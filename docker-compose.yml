@@ -5,6 +5,7 @@ services:
       - camera-data:/data
     environment:
       - CAM_DATA_PATH=/data/cameras.json
+      - FETCH_LOG_PATH=/data/cameras.log
       - KNACK_APP_ID=${KNACK_APP_ID}
       - KNACK_API_KEY=${KNACK_API_KEY}
       - KNACK_CONTAINER=${KNACK_CONTAINER}
