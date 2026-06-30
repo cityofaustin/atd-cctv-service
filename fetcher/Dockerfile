@@ -11,8 +11,8 @@ COPY cctv-fetcher.py .
 # install cron
 RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
-# add crontab
-RUN echo "13 3 * * * /usr/local/bin/python /app/cctv-fetcher.py >> /proc/1/fd/1 2>&1" | crontab -
+# add crontab - run every 12 hours
+RUN echo "0 */12 * * * /usr/local/bin/python /app/cctv-fetcher.py >> /proc/1/fd/1 2>&1" | crontab -
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
