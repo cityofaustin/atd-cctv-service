@@ -2,18 +2,20 @@
 CCTV Redirect Service
 """
 
+from datetime import datetime, timezone
 import json
 import logging
 import os
 import sys
 
-from flask import Flask, request, abort, redirect, Response
+from flask import Flask, request, abort, redirect, Response, jsonify
 
 CAM_DATA_PATH = os.environ.get("CAM_DATA_PATH", "/data/cameras.json")
+FETCH_LOG_PATH = os.environ.get("FETCH_LOG_PATH", "/data/cameras.log")
 CAM_ID_KEY = "CAMERA_ID"
 CAM_IP_FIELD = "CAMERA_IP"
 CAM_ID_PARAM = "cam_id"
-
+MAX_DATA_AGE_SECONDS = 43500  # 12 hours, 5 minutes
 
 logging.basicConfig(
     stream=sys.stdout,
@@ -28,6 +30,12 @@ app = Flask(__name__)
 def load_data(path):
     with open(path, "r") as fin:
         return json.load(fin)
+
+
+def get_last_data_fetch_timestamp(path):
+    with open(path, "r") as fin:
+        timestamp_str = fin.readline()
+        return int(timestamp_str.strip())
 
 
 def get_camera_by_id(key, val):
@@ -75,12 +83,39 @@ def get_camera(camera_id):
 
 @app.get("/healthz")
 def healthz():
-    """Liveness + readiness: confirm the camera data file is loadable."""
+    response = {
+        "status": "healthy",
+        "last_fetch_timestamp": None,
+        "message": "ok",
+    }
+
+    # confirm camera data file is loadable
     try:
         load_data(CAM_DATA_PATH)
     except (FileNotFoundError, json.JSONDecodeError, OSError):
-        return Response("unhealthy", status=503, mimetype="text/plain")
-    return Response("ok", status=200, mimetype="text/plain")
+        response["status"] = "unhealthy"
+        response["message"] = "Unable to load camera data"
+        return jsonify(response), 503
+
+    # confirm we can read the last fetch timestamp
+    try:
+        last_fetch_timestamp = get_last_data_fetch_timestamp(FETCH_LOG_PATH)
+    except Exception as e:
+        response["status"] = "unhealthy"
+        response["message"] = str(e)
+        return jsonify(response), 503
+
+    response["last_fetch_timestamp"] = last_fetch_timestamp
+
+    # confirm data isn't stale
+    current_timestamp = int(datetime.now(timezone.utc).timestamp())
+    age = current_timestamp - last_fetch_timestamp
+    if age > MAX_DATA_AGE_SECONDS:
+        response["status"] = "unhealthy"
+        response["message"] = f"Camera data is stale (age: {int(age/60)} minutes)"
+        return jsonify(response), 503
+
+    return jsonify(response), 200
 
 
 @app.errorhandler(405)
