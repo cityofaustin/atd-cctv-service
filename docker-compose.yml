@@ -1,0 +1,33 @@
+services:
+  fetcher:
+    image: atddocker/cctv-fetcher:latest
+    volumes:
+      - camera-data:/data
+    environment:
+      - CAM_DATA_PATH=/data/cameras.json
+      - FETCH_LOG_PATH=/data/cameras.log
+      - KNACK_APP_ID=${KNACK_APP_ID}
+      - KNACK_API_KEY=${KNACK_API_KEY}
+      - KNACK_CONTAINER=${KNACK_CONTAINER}
+    restart: unless-stopped
+
+  cctv-redirect:
+    image: atddocker/cctv-service:latest
+    ports:
+      - "5001:8000"
+    volumes:
+      - camera-data:/data:ro
+    environment:
+      - CAM_DATA_PATH=/data/cameras.json
+    restart: unless-stopped
+    depends_on:
+      - fetcher
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz').read()"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  camera-data:
