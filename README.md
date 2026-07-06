@@ -18,7 +18,7 @@ Here's how it works:
 
 ## Components
 
-The app has two containzerized components which are orchestated by Docker Compose:
+The app has two containerized components which are orchestrated by Docker Compose:
 
 ### Server
 
@@ -72,7 +72,7 @@ Returned when any check fails. The `message` field describes the cause:
 
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine `systemctl start docker`.
 
-2. Clone this repo and on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-serivce && cd cctv-serivce`.
+2. Clone this repo and on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-service && cd cctv-service`.
 
 3. Save a copy of `env_template` as `.env` and fill in the values.
 
@@ -86,13 +86,10 @@ docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
 
 ## Production setup
 
-The service is managed by `systemd`. To start, stop and restart the service, use the following:
+The service is managed by docker compose:
 
 ```
-# todo
-sudo systemctl start cctv-service
-sudo systemctl stop cctv-service
-sudo systemctl restart cctv-service
+docker compose up --build
 ```
 
 ## License
