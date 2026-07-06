@@ -1,6 +1,7 @@
 services:
   fetcher:
-    image: atddocker/cctv-fetcher:latest
+    build:
+      context: ./fetcher
     volumes:
       - camera-data:/data
     environment:
@@ -12,7 +13,8 @@ services:
     restart: unless-stopped
 
   cctv-redirect:
-    image: atddocker/cctv-service:latest
+    build:
+      context: ./server
     ports:
       - "5001:8000"
     volumes:
