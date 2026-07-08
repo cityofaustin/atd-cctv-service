@@ -86,10 +86,10 @@ docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
 
 ## Production setup
 
-The service is managed by docker compose:
+The service is managed by docker compose. This command will build and start the stack in detached mode (`-d`).
 
 ```
-docker compose up --build
+docker compose up --build -d
 ```
 
 ## License
